@@ -11,4 +11,5 @@ RUN dotnet publish -c Release ./Conductor.Web/Conductor.Web.csproj -o ../out
 FROM microsoft/dotnet:runtime
 WORKDIR /app
 COPY --from=build-env /app/out ./
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "Conductor.Web.dll"]
