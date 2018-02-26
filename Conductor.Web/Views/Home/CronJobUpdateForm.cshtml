@@ -1,0 +1,49 @@
+@model CronJobViewModel
+
+<h2>Update Cron Job</h2>
+<form asp-action="UpdateCronJob" asp-controller="Home" method="POST">
+    <div class="form-group">
+        <label class="control-label">Name</label>
+        <input asp-for="Name" class="form-control" value="@Model.Name" readonly>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label><input asp-for="OS" type="radio" value="Windows"> Windows</label>
+        <label><input asp-for="OS" type="radio" value="Linux"> Linux</label>
+    </div>
+    <div class="form-group">
+        <label class="control-label">CPU</label>
+        <input asp-for="CPU" class="form-control" value="@Model.CPU">
+        <span asp-validation-for="CPU" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Memory</label>
+        <input asp-for="Memory" class="form-control" value="@Model.Memory">
+        <span asp-validation-for="Memory" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label><input asp-for="Private" type="checkbox">Azure Container Registory</label>
+        <span asp-validation-for="Private" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Image</label>
+        <input asp-for="Image" class="form-control" value="@Model.Image">
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Environment Values</label>
+        <textarea asp-for="EnvValues" class="form-control" rows="5">@Model.EnvValues</textarea>
+        <span asp-validation-for="EnvValues" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Cron</label>
+        <input asp-for="Cron" class="form-control" value="@Model.Cron">
+        <span asp-validation-for="Cron" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label><input asp-for="Enabled" type="checkbox">Enabled</label>
+        <span asp-validation-for="Enabled" class="text-danger"></span>
+    </div>
+    <a asp-action="Definition" asp-controller="Home" asp-route-name="@Model.Name" class="btn btn-default">Cancel</a>
+    <input type="submit" class="btn btn-primary" value="Update">
+</form>

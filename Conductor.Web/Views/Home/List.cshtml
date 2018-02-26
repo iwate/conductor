@@ -1,0 +1,12 @@
+@model IEnumerable<JobDefinition>
+
+<div class="list-group">
+    @foreach(var def in Model)
+    {
+        var color = !def.Enabled ? "default" : def.GetJobType() == JobType.Cron ? "warning" : "success";
+        <a asp-action="Definition" asp-controller="Home" asp-route-name="@def.Name" class="list-group-item">
+            @def.Name
+            <span class="label label-@color pull-right">@def.Type</span>
+        </a>
+    }
+</div>

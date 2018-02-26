@@ -1,0 +1,23 @@
+@model IEnumerable<JobResult>
+<h2>History</h2>
+@if(Model.Count() == 0)
+{
+    <div class="well">No results found.</div>
+}
+<div class="list-group">
+@foreach(var result in Model)
+{
+    var status = result.GetResultStatus();
+    var color = status == ResultStatus.Running ? "warning"
+              : status == ResultStatus.Success ? "success"
+              : status == ResultStatus.Failed ? "danger"
+              : "default";
+    <a asp-action="Result" asp-controller="Home" asp-route-rowKey="@result.RowKey" class="list-group-item">
+        @if (result.StartAt.HasValue) {
+            @:@result.StartAt.Value.ToLocalTime()
+        }
+        <span class="label label-@color">@result.Status</span>
+    </a>
+}
+</div>
+<div ic-get-from='@Context.Request.Path' ic-trigger-on="load" ic-trigger-delay="10s" ic-target="#history"></div>

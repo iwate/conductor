@@ -1,0 +1,35 @@
+@model ResultViewModel
+
+<h2>@Model.JobName</h2>
+<a asp-action="Definition" asp-controller="Home" asp-route-name="@Model.JobName">Back</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Container Name</th><th>Status</th><th>Start At</th><th>Finish At</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.ContainerName</td>
+            <td>@Model.Status</td>
+            <td>
+                @if(Model.StartAt.HasValue) {
+                    @:@Model.StartAt.Value.ToLocalTime()
+                }
+            </td>
+            <td>
+                @if(Model.FinishAt.HasValue) {
+                    @:@Model.FinishAt.Value.ToLocalTime()
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Log</h3>
+<pre>@Model.Log</pre>
+
+@if (Model.Status == ResultStatus.Creating || Model.Status == ResultStatus.Running) {
+    <div ic-get-from='@Context.Request.Path' ic-trigger-on="load" ic-trigger-delay="3s" ic-target="#main"></div>
+}

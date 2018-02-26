@@ -1,0 +1,86 @@
+@model JobDefinition
+@{
+    var form = Model.GetJobType() == JobType.Cron ? "CronJobUpdateForm" : "QueueJobUpdateForm";
+}
+<h2>
+    Definition
+    <a asp-action="@form" asp-controller="Home" asp-route-name="@Model.Name"><i class="glyphicon glyphicon-edit"></i></a>
+</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th><th>Type</th><th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Name</td>
+            <td>@Model.Type</td>
+            <td>
+                @if (@Model.Enabled) {
+                    <span class="label label-info">Enabled</span>
+                } else {
+                    <span class="label label-default">Disabled</span>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Container Settings</h3>
+<table class="table">
+    <tr>
+        <th class="col-md-3">OS</th><td>@Model.OS</td>
+    </tr>
+    <tr>
+        <th class="col-md-3">CPU</th><td>@Model.CPU</td>
+    </tr>
+    <tr>
+        <th class="col-md-3">Memory</th><td>@Model.Memory</td>
+    </tr>
+    <tr>
+        <th class="col-md-3">Image Registory</th><td>@(Model.Private ? "Private" : "Public")</td>
+    </tr>
+    <tr>
+        <th class="col-md-3">Container Image</th><td>@Model.Image</td>
+    </tr>
+    <tr>
+        <th class="col-md-3">Environment Values</th>
+        <td>
+            <table class="table">
+            @foreach(var kv in Newtonsoft.Json.JsonConvert.DeserializeObject<IDictionary<string,string>>(@Model.EnvValues))
+            {
+                <tr>
+                    <td>@kv.Key</td>
+                    <td>@(kv.Key.Contains("ConnectionString") || kv.Key.Contains("Secret") ? "*********************" : @kv.Value)</td>
+                </tr>
+            }
+            </table>
+        </td>
+    </tr>
+</table>
+
+@if (Model.GetJobType() == JobType.Cron)
+{
+    var def = (CronJobDefinition)Model;
+    <h3>Cron Settings</h3>
+    <table class="table">
+        <tr>
+            <th class="col-md-3">Schedule</th><td>@def.Cron</td>
+        </tr>
+    </table>
+} 
+else if (Model.GetJobType() == JobType.Queue)
+{
+    var def = (QueueJobDefinition)Model;
+    <h3>Queue Settings</h3>
+    <table class="table">
+        <tr>
+            <th class="col-md-3">Azure Storage Queue Name</th><td>@def.Queue</td>
+        </tr>
+        <tr>
+            <th class="col-md-3">Azure Storage Connection String</th><td>*********************</td>
+        </tr>
+    </table>
+}
+<div id="history" ic-get-from='@Url.Content($"~/jobs/{Model.Name}/history")' ic-trigger-on="load"></div>

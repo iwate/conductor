@@ -1,0 +1,4 @@
+﻿@{
+    bool ic = bool.TryParse(Context.Request.Headers["X-IC-Request"], out ic) ? ic : false;
+    Layout = ic == false ? "_Layout" : null;
+}
