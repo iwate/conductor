@@ -4,7 +4,7 @@ WORKDIR /app
 # copy everything else and build
 COPY . ./
 RUN dotnet restore
-RUN dotnet build -c ./Conductor.sln
+RUN dotnet build -c Release ./Conductor.sln
 RUN dotnet publish -c Release ./Conductor.Web/Conductor.Web.csproj -o ../out
 
 # build runtime image
