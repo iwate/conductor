@@ -13,11 +13,11 @@ namespace Conductor.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IJobService _jobService;
-        private readonly IJobRegistory _jobRegistory;
-        public HomeController(IJobService jobService, IJobRegistory jobRegistory)
+        private readonly IJobRegistry _jobRegistry;
+        public HomeController(IJobService jobService, IJobRegistry jobRegistry)
         {
             _jobService = jobService;
-            _jobRegistory = jobRegistory;
+            _jobRegistry = jobRegistry;
         }
 
         [HttpGet("/")]
@@ -69,7 +69,7 @@ namespace Conductor.Web.Controllers
                 Cron = model.Cron
             });
 
-            _jobRegistory.Enqueue(model.Name);
+            _jobRegistry.Enqueue(model.Name);
 
             return RedirectToAction("Definition", new { name = model.Name});
         }
@@ -151,7 +151,7 @@ namespace Conductor.Web.Controllers
                 ConnectionString = model.ConnectionString,
             });
 
-            _jobRegistory.Enqueue(model.Name);            
+            _jobRegistry.Enqueue(model.Name);            
 
             return RedirectToAction("Definition", new { name = model.Name});
         }

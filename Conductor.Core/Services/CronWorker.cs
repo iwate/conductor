@@ -11,8 +11,8 @@ namespace Conductor.Core.Services
     public class CronWorker : BackgroundWorkerBase
     {
         private readonly Func<JobDefinition, CronJob> _jobFactory;
-        public CronWorker(IJobService jobService, IJobRegistory jobRegistory, ILockFactory lockFactory, IACIService aciService, ILogger logger)
-            : base (jobService, jobRegistory, lockFactory, JobType.Cron, logger)
+        public CronWorker(IJobService jobService, IJobRegistry jobRegistry, ILockFactory lockFactory, IACIService aciService, ILogger logger)
+            : base (jobService, jobRegistry, lockFactory, JobType.Cron, logger)
         {
             _jobFactory = def => new CronJob(def, jobService, lockFactory, aciService, logger);
         }

@@ -24,7 +24,7 @@ namespace Conductor.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IJobRegistory, JobRegistory>();
+            services.AddSingleton<IJobRegistry, JobRegistry>();
             services.AddTransient<IBlobRepository, BlobRepository>();
             services.AddTransient<IJobDefinitionRepository, JobDefinitionRepository>();
             services.AddTransient<IJobResultRepository, JobResultRepository>();
@@ -58,13 +58,13 @@ namespace Conductor.Web
 
             var services = app.ApplicationServices;
             var jobService = services.GetRequiredService<IJobService>();
-            var jobRegistory = services.GetRequiredService<IJobRegistory>();
+            var jobRegistry = services.GetRequiredService<IJobRegistry>();
             var lockFactory = services.GetRequiredService<ILockFactory>();
             var aciService = services.GetRequiredService<IACIService>();
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
-            var cronWorker = new CronWorker(jobService, jobRegistory, lockFactory, aciService, loggerFactory.CreateLogger("CronWorker"));
-            var queueWorker = new QueueWorker(jobService, jobRegistory, lockFactory, aciService, loggerFactory.CreateLogger("QueueWorker"));
+            var cronWorker = new CronWorker(jobService, jobRegistry, lockFactory, aciService, loggerFactory.CreateLogger("CronWorker"));
+            var queueWorker = new QueueWorker(jobService, jobRegistry, lockFactory, aciService, loggerFactory.CreateLogger("QueueWorker"));
 
             lifetime.ApplicationStopping.Register(() => {
                 cronWorker.Stop();

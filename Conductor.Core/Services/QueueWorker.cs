@@ -11,8 +11,8 @@ namespace Conductor.Core.Services
     public class QueueWorker : BackgroundWorkerBase
     {
         private readonly Func<JobDefinition, QueueJob> _jobFactory;
-        public QueueWorker(IJobService jobService, IJobRegistory jobRegistory, ILockFactory lockFactory, IACIService aciService, ILogger logger)
-            : base (jobService, jobRegistory, lockFactory, JobType.Queue, logger)
+        public QueueWorker(IJobService jobService, IJobRegistry jobRegistry, ILockFactory lockFactory, IACIService aciService, ILogger logger)
+            : base (jobService, jobRegistry, lockFactory, JobType.Queue, logger)
         {
             _jobFactory = def => new QueueJob(def, jobService, lockFactory, aciService, logger);
         }

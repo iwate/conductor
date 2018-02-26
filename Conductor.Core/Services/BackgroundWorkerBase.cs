@@ -12,15 +12,15 @@ namespace Conductor.Core.Services
     {
         private readonly IJobService _jobService;
         private readonly ILockFactory _lockFactory;
-        private readonly IJobRegistory _jobRegistory;
+        private readonly IJobRegistry _jobRegistry;
         private readonly CancellationTokenSource _globalCancellationTokenSource;
         private readonly List<IJob> _jobs;
         private readonly JobType _targetType;
         private readonly ILogger _logger;
-        public BackgroundWorkerBase(IJobService jobService, IJobRegistory jobRegistory, ILockFactory lockFactory, JobType type, ILogger logger)
+        public BackgroundWorkerBase(IJobService jobService, IJobRegistry jobRegistry, ILockFactory lockFactory, JobType type, ILogger logger)
         {
             _jobService = jobService;
-            _jobRegistory = jobRegistory;
+            _jobRegistry = jobRegistry;
             _lockFactory = lockFactory;
             _globalCancellationTokenSource = new CancellationTokenSource();
             _jobs = new List<IJob>();
@@ -49,7 +49,7 @@ namespace Conductor.Core.Services
                 job.Start(recoveries, _globalCancellationTokenSource.Token);
             }
 
-            while(string.IsNullOrEmpty(_jobRegistory.Dequeue()))
+            while(string.IsNullOrEmpty(_jobRegistry.Dequeue()))
             {
                 await Task.Delay(TimeSpan.FromSeconds(5));
             }

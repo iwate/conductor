@@ -15,7 +15,7 @@ namespace Conductor.Core.Services
     {
         private readonly Region _region;
         private readonly string _resourceGroup;
-        private readonly string _registory;
+        private readonly string _registry;
         private readonly IAzure _azure;
         public ACIService(IConfiguration config)
         {
@@ -26,7 +26,7 @@ namespace Conductor.Core.Services
             var aci =  config.GetSection("ACI");
             var region = aci["Region"];
             _resourceGroup = aci["ResourceGroup"];
-            _registory = aci["Registory"];
+            _registry = aci["Registry"];
 
             if (!principal.Exists() || !aci.Exists())
                 throw new ArgumentException(nameof(config));
@@ -46,8 +46,8 @@ namespace Conductor.Core.Services
             if (string.IsNullOrEmpty(_resourceGroup))
                 throw new ArgumentException(nameof(config), "'ResourceGroup' is null.");
             
-            if (string.IsNullOrEmpty(_registory))
-                throw new ArgumentException(nameof(config), "'Registory' is null.");
+            if (string.IsNullOrEmpty(_registry))
+                throw new ArgumentException(nameof(config), "'Registry' is null.");
                 
             var credentials = SdkContext.AzureCredentialsFactory.FromServicePrincipal(clientId, clientSecret, tenantId, AzureEnvironment.AzureGlobalCloud);
             _azure = Azure
@@ -60,14 +60,14 @@ namespace Conductor.Core.Services
         }
         public async Task CreateAsync(string containerName, string imageName, bool @private, string os, double cpu, double memory, IDictionary<string, string> env)
         {
-            var registory = await _azure.ContainerRegistries.GetByResourceGroupAsync(_resourceGroup, _registory);
-            var credentials = await registory.GetCredentialsAsync();
+            var registry = await _azure.ContainerRegistries.GetByResourceGroupAsync(_resourceGroup, _registry);
+            var credentials = await registry.GetCredentialsAsync();
             var group = _azure.ContainerGroups
                             .Define(containerName)
                             .WithRegion(_region)
                             .WithExistingResourceGroup(_resourceGroup);
             var g1 = os.ToLower() == "windows" ? group.WithWindows() : group.WithLinux();
-            var g2 = @private? g1.WithPrivateImageRegistry(registory.LoginServerUrl, credentials.Username, credentials.AccessKeys.First().Value) : g1.WithPublicImageRegistryOnly();
+            var g2 = @private? g1.WithPrivateImageRegistry(registry.LoginServerUrl, credentials.Username, credentials.AccessKeys.First().Value) : g1.WithPublicImageRegistryOnly();
             var g3 = g2.WithoutVolume();
 
             await g3.DefineContainerInstance(containerName)
