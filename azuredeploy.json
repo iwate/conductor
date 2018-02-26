@@ -8,21 +8,21 @@
         "description": "Name of azure web app"
       }
     },
-    "appId": {
+    "servicePrincipalAppId": {
       "type": "string",
       "metadata": {
         "name":"Service Principal App ID",
         "description": "App ID of service principal"
       }
     },
-    "password": {
+    "servicePrincipalPassword": {
       "type": "string",
       "metadata": {
         "name":"Service Principal Password",
         "description": "Password of service principal"
       }
     },
-    "tenantId": {
+    "servicePrincipalTenantId": {
       "type": "string",
       "metadata": {
         "name":"Service Principal Tenant ID",
@@ -66,9 +66,9 @@
           "appSettings": [
             { "name": "WEBSITES_PORT", "value": "http://+:5000" },
             { "name": "DOCKER_CUSTOM_IMAGE_NAME", "value": "iwate/conductor" },
-            { "name": "AzureServicePrincipal__AppId", "value": "[parameters('appId')]" },
-            { "name": "AzureServicePrincipal__Password", "value": "[parameters('password')]" },
-            { "name": "AzureServicePrincipal__TenantId", "value": "[parameters('tenantId')]" },
+            { "name": "AzureServicePrincipal__AppId", "value": "[parameters('servicePrincipalAppId')]" },
+            { "name": "AzureServicePrincipal__Password", "value": "[parameters('servicePrincipalPassword')]" },
+            { "name": "AzureServicePrincipal__TenantId", "value": "[parameters('servicePrincipalTenantId')]" },
             { "name": "ACI__Region", "value": "westus" },
             { "name": "ACI__ResourceGroup", "value": "[resourceGroup().name]" },
             { "name": "ACI__Registry", "value": "[variables('registryName')]" },
