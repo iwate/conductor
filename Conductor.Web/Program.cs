@@ -19,7 +19,6 @@ namespace Conductor.Web
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:5000")
                 .UseStartup<Startup>()
                 .Build();
     }
