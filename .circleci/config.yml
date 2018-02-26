@@ -16,6 +16,6 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker login -u ${HUB_USER} -p ${HUB_PASS}
-              docker tag app "iwate/app"
-              docker push "iwate/app"
+              docker tag app "iwate/conductor"
+              docker push "iwate/conductor"
             fi
