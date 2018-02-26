@@ -20,5 +20,7 @@ RUN apt-get update \
     && echo "$SSH_PASSWD" | chpasswd 
 
 COPY sshd_config /etc/ssh/
+COPY init.sh /usr/local/bin/
+RUN chmod u+x /usr/local/bin/init.sh
 EXPOSE 5000 2222
-ENTRYPOINT ["dotnet", "Conductor.Web.dll"]
+ENTRYPOINT ["init.sh"]
