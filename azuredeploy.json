@@ -1,0 +1,111 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "0.9.0.0",
+  "parameters": {
+    "siteName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of azure web app"
+      }
+    },
+    "appId": {
+      "type": "string",
+      "metadata": {
+        "name":"Service Principal App ID",
+        "description": "App ID of service principal"
+      }
+    },
+    "password": {
+      "type": "string",
+      "metadata": {
+        "name":"Service Principal Password",
+        "description": "Password of service principal"
+      }
+    },
+    "tenantId": {
+      "type": "string",
+      "metadata": {
+        "name":"Service Principal Tenant ID",
+        "description": "Tenant ID of service principal"
+      }
+    }
+  },
+  "variables": {
+    "hostingPlanName": "[concat(parameters('siteName'), 'serviceplan')]",
+    "storageName": "[replace(concat(parameters('siteName'), 'storage'),'-', '')]",
+    "registryName": "[replace(concat(parameters('siteName'), 'registry'),'-', '')]"
+  },
+  "resources": [
+    {
+      "name": "[variables('registryName')]",
+      "type": "Microsoft.ContainerRegistry/registries",
+      "apiVersion": "2017-10-01",
+      "location": "[resourceGroup().location]",
+      "comments": "Container registry for storing docker images",
+      "properties": {
+        "adminUserEnabled": true
+      },
+      "sku": {
+        "name":"Standard"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageName')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "name": "[parameters('siteName')]",
+      "properties": {
+        "siteConfig": {
+          "appSettings": [
+            { "name": "WEBSITES_PORT", "value": "http://+:5000" },
+            { "name": "DOCKER_CUSTOM_IMAGE_NAME", "value": "iwate/conductor" },
+            { "name": "AzureServicePrincipal__AppId", "value": "[parameters('appId')]" },
+            { "name": "AzureServicePrincipal__Password", "value": "[parameters('password')]" },
+            { "name": "AzureServicePrincipal__TenantId", "value": "[parameters('tenantId')]" },
+            { "name": "ACI__Region", "value": "westus" },
+            { "name": "ACI__ResourceGroup", "value": "[resourceGroup().name]" },
+            { "name": "ACI__Registry", "value": "[variables('registryName')]" },
+            { "name": "ConnectionStrings__StorageAccount", "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listKeys(concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', variables('storageName')),'2017-10-01').keys[0].value)]" }
+          ],
+          "alwaysOn": true
+        },
+        "name": "[parameters('siteName')]",
+        "serverFarmId": "[variables('hostingPlanName')]",
+        "hostingEnvironment": ""
+      },
+      "apiVersion": "2016-08-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('hostingPlanName')]",
+        "[variables('storageName')]",
+        "[variables('registryName')]"
+      ]
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "name": "[variables('hostingPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[variables('hostingPlanName')]",
+        "workerSizeId": "1",
+        "reserved": true,
+        "numberOfWorkers": "1",
+        "hostingEnvironment": ""
+      },
+      "sku": {
+        "Tier": "Standard",
+        "Name": "B1"
+      },
+      "kind": "linux"
+    }
+  ],
+  "outputs": {}
+}
