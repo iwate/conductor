@@ -20,5 +20,5 @@ RUN apt-get update \
     && echo "$SSH_PASSWD" | chpasswd 
 
 COPY sshd_config /etc/ssh/
-EXPOSE 5000
+EXPOSE 5000 2222
 ENTRYPOINT ["dotnet", "Conductor.Web.dll"]
