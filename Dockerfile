@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:sdk AS build-env
+FROM microsoft/dotnet:2-sdk AS build-env
 WORKDIR /app
 
 # copy everything else and build
@@ -8,19 +8,10 @@ RUN dotnet build -c Release ./Conductor.sln
 RUN dotnet publish -c Release ./Conductor.Web/Conductor.Web.csproj -o ../out
 
 # build runtime image
-FROM microsoft/dotnet:runtime
+FROM microsoft/dotnet:2-runtime
 WORKDIR /app
 COPY --from=build-env /app/out ./
-# ssh
-ENV SSH_PASSWD "root:Docker!"
-RUN apt-get update \
-        && apt-get install -y --no-install-recommends dialog \
-        && apt-get update \
-    && apt-get install -y --no-install-recommends openssh-server \
-    && echo "$SSH_PASSWD" | chpasswd 
 
-COPY sshd_config /etc/ssh/
-COPY init.sh /usr/local/bin/
-RUN chmod u+x /usr/local/bin/init.sh
-EXPOSE 5000 2222
-ENTRYPOINT ["init.sh"]
+EXPOSE 5000
+
+ENTRYPOINT ["dotnet", "Conductor.Web.dll"]
