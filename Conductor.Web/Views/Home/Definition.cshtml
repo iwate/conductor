@@ -45,7 +45,7 @@
         <th class="col-md-3">Container Image</th><td>@Model.Image</td>
     </tr>
     <tr>
-        <th class="col-md-3">Environment Values</th>
+        <th class="col-md-3">Environment Variables</th>
         <td>
             <table class="table">
             @foreach(var kv in Newtonsoft.Json.JsonConvert.DeserializeObject<IDictionary<string,string>>(@Model.EnvVariables))
