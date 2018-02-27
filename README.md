@@ -45,7 +45,7 @@ You should execute cmd & exe on Azure Function if need executing function on a c
 
 Process and AppDomain is so great....
 
-### Function Implementation
+### Queue Job
 
 Container create cost is huge(time & money). You should make Queue job container applications as batch processing as the following.
 
