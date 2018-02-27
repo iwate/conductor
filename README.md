@@ -2,6 +2,8 @@
 Conductor is job scheduler for Azure Container Instance.
 It's inspired by AWS Lambda.
 
+![thumb](https://user-images.githubusercontent.com/1011232/36738300-8b704b56-1c20-11e8-8baa-e548125f4e37.jpg)
+
 ### Try it
 [![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
