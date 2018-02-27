@@ -1,1 +1,20 @@
-﻿<h2>About</h2>
+﻿<div class="jumbotron">
+  <h1>Job scheduler<br><small>for Azure Container Instance</small></h1>
+  <p><a class="btn btn-primary btn-lg" href="https://github.com/iwate/conductor"><img src="~/mark-github.svg" class="github">View GitHub</a></p>
+</div>
+<p>Conductor is job scheduler for Azure Container Instance. It's inspired by AWS Lambda.</p>
+<h2>Motivation</h2>
+<p>Azure Function is great services for FaaS application in the following points.</p>
+<ul>
+  <li>Fast wakeup (made by simply a process)</li>
+  <li>Shared process (and sahred static values)</li>
+  <li>Durable Function (can make async & scalable app easily)</li>
+</ul>
+ <p>However, in some case, the above fetures is obstacle.Then I desire to execute function on a clean environment as possible.</p>
+ <h2>Feature</h2>
+ <ol>
+   <li>Queue Job: <br>Run the container when queue message count is greeter than 0.</li>
+   <li>Cron Job: <br>Run the container on scheduled time.</li>
+ </ol>
+ <h2>Samples</h2>
+ <a href="https://hub.docker.com/r/iwate/queuesample/" class="btn btn-default">Queue Job Sample</a>

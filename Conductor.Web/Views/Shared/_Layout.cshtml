@@ -21,8 +21,8 @@
             <div class="col-md-3">
                 <h2>Jobs</h2>
                 <div class="form-group">
-                    <a asp-action="CronJobCreateForm" asp-controller="Home" class="btn btn-primary">Add Cron Job</a>
                     <a asp-action="QueueJobCreateForm" asp-controller="Home" class="btn btn-primary">Add Queue Job</a>
+                    <a asp-action="CronJobCreateForm" asp-controller="Home" class="btn btn-primary">Add Cron Job</a>
                 </div>
                 <div ic-get-from='@Url.Content("~/jobs")' ic-trigger-on="load"></div>
             </div>
