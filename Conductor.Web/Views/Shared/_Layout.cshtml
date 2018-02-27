@@ -17,20 +17,26 @@
         </div>
     </nav>
     <div class="container body-content">
-        <div class="row">
-            <div class="col-md-3">
-                <h2>Jobs</h2>
-                <div class="form-group">
-                    <a asp-action="QueueJobCreateForm" asp-controller="Home" class="btn btn-primary">Add Queue Job</a>
-                    <a asp-action="CronJobCreateForm" asp-controller="Home" class="btn btn-primary">Add Cron Job</a>
-                </div>
-                <div ic-get-from='@Url.Content("~/jobs")' ic-trigger-on="load"></div>
-            </div>
-            <div class="col-md-9" id="main">
+        @if (ViewBag.NoSide != null && ViewBag.NoSide) {
+            <div class="row">
                 @RenderBody()
             </div>
-        </div>
-
+        }
+        else {
+            <div class="row">
+                <div class="col-md-3">
+                    <h2>Jobs</h2>
+                    <div class="form-group">
+                        <a asp-action="QueueJobCreateForm" asp-controller="Home" class="btn btn-primary">Add Queue Job</a>
+                        <a asp-action="CronJobCreateForm" asp-controller="Home" class="btn btn-primary">Add Cron Job</a>
+                    </div>
+                    <div ic-get-from='@Url.Content("~/jobs")' ic-trigger-on="load"></div>
+                </div>
+                <div class="col-md-9" id="main">
+                    @RenderBody()
+                </div>
+            </div>
+        }
         <hr />
         <footer class="text-center">
             <p>&copy; 2018 - Conductor</p>

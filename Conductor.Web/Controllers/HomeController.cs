@@ -7,17 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Conductor.Web.Models;
 using Conductor.Core.Services;
 using Conductor.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Conductor.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IJobService _jobService;
         private readonly IJobRegistry _jobRegistry;
-        public HomeController(IJobService jobService, IJobRegistry jobRegistry)
+        private readonly IConfiguration _config;
+        public HomeController(IJobService jobService, IJobRegistry jobRegistry, IConfiguration config)
         {
             _jobService = jobService;
             _jobRegistry = jobRegistry;
+            _config = config;
         }
 
         [HttpGet("/")]
@@ -239,6 +247,62 @@ namespace Conductor.Web.Controllers
                 FinishAt = result.FinishAt,
                 Log = await _jobService.ReadLogAsync(result.LogUri)
             });
+        }
+
+        [HttpGet("/login")] 
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost("/login")] 
+        [AllowAnonymous]        
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var password = _config.GetSection("CookieAuth")["Password"];
+
+            if (model.Password != password)
+            {
+                ViewBag.ErrMsg = "Password is invalid"; 
+        
+                return View(); 
+            }
+
+            var claims = new List<Claim>() 
+            { 
+                new Claim(ClaimTypes.Name,"conductor")
+            };
+
+            var userPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, "PasswordLogin"));
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, new AuthenticationProperties 
+            { 
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(20), 
+                IsPersistent = false, 
+                AllowRefresh = true 
+            }); 
+
+            return RedirectToAction("Index", "Home"); 
+        }
+
+        [HttpGet("/logout")]
+        [AllowAnonymous]        
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookie"); 
+ 
+            return RedirectToAction("Index", "Home"); 
+        }
+
+        [HttpGet("/forbidden")] 
+        [AllowAnonymous]        
+        public IActionResult Forbidden()
+        {
+            return new StatusCodeResult(403);
         }
 
         public IActionResult Error()

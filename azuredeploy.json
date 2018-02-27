@@ -1,11 +1,17 @@
 {
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "0.9.0.0",
+  "contentVersion": "1.0.0.0",
   "parameters": {
     "siteName": {
       "type": "string",
       "metadata": {
         "description": "Name of azure web app"
+      }
+    },
+    "loginPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for login to conductor"
       }
     },
     "servicePrincipalAppId": {
@@ -66,6 +72,7 @@
           "appSettings": [
             { "name": "WEBSITES_PORT", "value": "http://+:5000" },
             { "name": "DOCKER_CUSTOM_IMAGE_NAME", "value": "iwate/conductor" },
+            { "name": "CookieAuth__Password", "value": "[parameters('loginPassword')]" },
             { "name": "AzureServicePrincipal__AppId", "value": "[parameters('servicePrincipalAppId')]" },
             { "name": "AzureServicePrincipal__Password", "value": "[parameters('servicePrincipalPassword')]" },
             { "name": "AzureServicePrincipal__TenantId", "value": "[parameters('servicePrincipalTenantId')]" },
