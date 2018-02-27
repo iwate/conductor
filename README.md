@@ -5,8 +5,8 @@ It's inspired by AWS Lambda.
 ### Try it
 [![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
-You need create service principal before deploy. 
-[https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
+You need create service principal before deploy.   
+[https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli)
 
 ### Motivation
 Azure Function is great services for FaaS application in the following points.
@@ -45,8 +45,6 @@ Process and AppDomain is so great....
 
 ### Function Implementation
 
-[queuesample](https://github.com/iwate/queuesample)
-
 Container create cost is huge(time & money). You should make Queue job container applications as batch processing as the following.
 
 This sample wait until 10min after last queue message. 
@@ -83,6 +81,7 @@ static void Main(string[] args)
 
     ExecuteUntilAsync(async() => await ExecuteAllAsync(queue), i=>TimeSpan.FromMinutes(1), 10).Wait();
 }
+
 static async Task ExecuteUntilAsync(Func<Task<bool>> action, Func<int, TimeSpan> backoff, int loopMax)
 {
     var count = 0;
@@ -96,6 +95,7 @@ static async Task ExecuteUntilAsync(Func<Task<bool>> action, Func<int, TimeSpan>
         await Task.Delay(backoff(++count));
     }
 }
+
 static async Task<bool> ExecuteAllAsync(CloudQueue queue)
 {
     await queue.FetchAttributesAsync();
@@ -110,6 +110,7 @@ static async Task<bool> ExecuteAllAsync(CloudQueue queue)
     }
     return true;
 }
+
 static bool Execute(CloudQueueMessage message)
 {
     Console.WriteLine(message.AsString);
