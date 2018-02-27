@@ -22,6 +22,6 @@ namespace Conductor.Web.Models
         public string Image { get; set; }
         [Required]
         [JsonDictValidation]
-        public string EnvValues { get; set; } = "{\n  \"MSG\":\"Hello, World!\"\n}";
+        public string EnvVariables { get; set; } = "{\n  \"MSG\":\"Hello, World!\"\n}";
     }
 }

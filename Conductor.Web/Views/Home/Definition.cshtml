@@ -48,7 +48,7 @@
         <th class="col-md-3">Environment Values</th>
         <td>
             <table class="table">
-            @foreach(var kv in Newtonsoft.Json.JsonConvert.DeserializeObject<IDictionary<string,string>>(@Model.EnvValues))
+            @foreach(var kv in Newtonsoft.Json.JsonConvert.DeserializeObject<IDictionary<string,string>>(@Model.EnvVariables))
             {
                 <tr>
                     <td>@kv.Key</td>

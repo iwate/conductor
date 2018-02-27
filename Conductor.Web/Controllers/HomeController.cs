@@ -65,7 +65,7 @@ namespace Conductor.Web.Controllers
                 Memory = model.Memory,
                 Private = model.Private,
                 Image = model.Image,
-                EnvValues = model.EnvValues,
+                EnvVariables = model.EnvVariables,
                 Cron = model.Cron
             });
 
@@ -90,7 +90,7 @@ namespace Conductor.Web.Controllers
                 Memory = job.Memory,
                 Private = job.Private,
                 Image = job.Image,
-                EnvValues = job.EnvValues,
+                EnvVariables = job.EnvVariables,
                 Cron = job.Cron
             });
         }
@@ -114,7 +114,7 @@ namespace Conductor.Web.Controllers
                 Memory = model.Memory,
                 Private = model.Private,
                 Image = model.Image,
-                EnvValues = model.EnvValues,
+                EnvVariables = model.EnvVariables,
                 Cron = model.Cron
             });
 
@@ -146,7 +146,7 @@ namespace Conductor.Web.Controllers
                 Memory = model.Memory,
                 Private = model.Private,
                 Image = model.Image,
-                EnvValues = model.EnvValues,
+                EnvVariables = model.EnvVariables,
                 Queue = model.Queue,
                 ConnectionString = model.ConnectionString,
             });
@@ -172,7 +172,7 @@ namespace Conductor.Web.Controllers
                 Memory = job.Memory,
                 Private = job.Private,
                 Image = job.Image,
-                EnvValues = job.EnvValues,
+                EnvVariables = job.EnvVariables,
                 Queue = job.Queue,
                 ConnectionString = job.ConnectionString,
             });
@@ -197,7 +197,7 @@ namespace Conductor.Web.Controllers
                 Memory = model.Memory,
                 Private = model.Private,
                 Image = model.Image,
-                EnvValues = model.EnvValues,
+                EnvVariables = model.EnvVariables,
                 Queue = model.Queue,
                 ConnectionString = model.ConnectionString,
             });           

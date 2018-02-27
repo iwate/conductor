@@ -16,7 +16,7 @@ namespace Conductor.Core.Models
         public double Memory { get; set; }
         public bool Private { get; set; }
         public string Image { get; set; }
-        public string EnvValues { get; set; }
+        public string EnvVariables { get; set; }
         public JobDefinition()
         {}
         public JobDefinition(string name)
@@ -28,9 +28,9 @@ namespace Conductor.Core.Models
         {
             return (JobType)Enum.Parse(typeof(JobType), Type);
         }
-        public virtual IDictionary<string, string> GetEnvValues()
+        public virtual IDictionary<string, string> GetEnvVariables()
         {
-            return JsonConvert.DeserializeObject<IDictionary<string,string>>(EnvValues);
+            return JsonConvert.DeserializeObject<IDictionary<string,string>>(EnvVariables);
         }
     }
 }

@@ -31,13 +31,13 @@ namespace Conductor.Core.Models
             return queue;
         }
 
-        public override IDictionary<string, string> GetEnvValues()
+        public override IDictionary<string, string> GetEnvVariables()
         {
-            var envValues = base.GetEnvValues();
-            envValues["ConnectionString"] = ConnectionString;
-            envValues["Queue"] = Queue;
+            var envVariables = base.GetEnvVariables();
+            envVariables["ConnectionString"] = ConnectionString;
+            envVariables["Queue"] = Queue;
 
-            return envValues;
+            return envVariables;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Conductor.Core.Models
 
             try
             {   
-                await _aciService.CreateAsync(guid, def.Image, def.Private, def.OS, def.CPU, def.Memory, def.GetEnvValues());                
+                await _aciService.CreateAsync(guid, def.Image, def.Private, def.OS, def.CPU, def.Memory, def.GetEnvVariables());                
                 
                 await WaitAndWriteLog(result);
             }
