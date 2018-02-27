@@ -36,7 +36,7 @@ namespace Conductor.Core.Repositories
                 query = query.Where(TableQuery.CombineFilters(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, jobName),
                     TableOperators.And,
-                    TableQuery.GenerateFilterConditionForLong("RowKey", QueryComparisons.GreaterThan, long.Parse(skipToken))
+                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThan, skipToken)
                 ));
             }
             query = query.Take(limit);
