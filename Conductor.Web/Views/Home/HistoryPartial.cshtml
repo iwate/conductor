@@ -1,0 +1,16 @@
+@model IEnumerable<JobResult>
+
+@foreach(var result in Model)
+{
+    var status = result.GetResultStatus();
+    var color  = status == ResultStatus.Running ? "warning"
+               : status == ResultStatus.Success ? "success"
+               : status == ResultStatus.Failed  ? "danger"
+               : "default";
+    <a asp-action="Result" asp-controller="Home" asp-route-rowKey="@result.RowKey" class="list-group-item">
+        @if (result.StartAt.HasValue) {
+            @:@result.StartAt.Value.ToLocalTime()
+        }
+        <span class="label label-@color">@result.Status</span>
+    </a>
+}

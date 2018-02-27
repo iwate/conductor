@@ -4,7 +4,7 @@
 }
 <h2>
     Definition
-    <a asp-action="@form" asp-controller="Home" asp-route-name="@Model.Name"><i class="glyphicon glyphicon-edit"></i></a>
+    <a asp-action="@form" asp-controller="Home" asp-route-name="@Model.Name"><i class="small glyphicon glyphicon-edit"></i></a>
 </h2>
 <table class="table">
     <thead>
@@ -83,4 +83,8 @@ else if (Model.GetJobType() == JobType.Queue)
         </tr>
     </table>
 }
+<h2>
+    History
+    <a asp-action="History" asp-controller="Home" asp-route-name="@Model.Name"><i class="small glyphicon glyphicon-chevron-right"></i></a>
+</h2>
 <div id="history" ic-get-from='@Url.Content($"~/jobs/{Model.Name}/history")' ic-trigger-on="load"></div>
